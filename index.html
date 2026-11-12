@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Novara Trasporti Express - Servizio di logistica Novara</title>
+<meta name="description" content="Logistica e distribuzione espressa B2B: consegne in ZTL, deposito, supply chain management e logistica del freddo. Novara Trasporti Express.">
+<link rel="icon" href="img/favicon.png">
+<script>document.documentElement.classList.add('js');addEventListener('load',function(){if(!window.gsap)document.documentElement.classList.remove('js')})</script>
+<link rel="preload" as="image" type="image/avif" fetchpriority="high"
+  imagesrcset="img/hero-640.avif 640w, img/hero-1024.avif 1024w, img/hero-1600.avif 1600w, img/hero-2048.avif 2048w"
+  imagesizes="(orientation:portrait) 100vh, 100vw">
+<link rel="preload" href="fonts/open-sans.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:"Open Sans";src:url(fonts/open-sans.woff2) format("woff2");font-weight:400 800;font-style:normal;font-display:swap;
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215}
+@font-face{font-family:"Open Sans Fallback";src:local("Arial"),local("Helvetica");size-adjust:105.2%;ascent-override:101.6%;descent-override:27.9%;line-gap-override:0%}
+:root{
+  --red:#E00404; --red-2:#C33228; --red-glow:rgba(224,4,4,.35);
+  --ink:#121212; --ink-2:#212121; --muted:#6d6d6d;
+  --bg:#fff; --soft:#f4f4f4; --line:#e8e8e8;
+  --r:22px; --ease:cubic-bezier(.22,1,.36,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+html.lenis,html.lenis body{height:auto;scroll-behavior:auto}
+.lenis.lenis-stopped{overflow:clip}
+.lenis [data-lenis-prevent]{overscroll-behavior:contain}
+html,body{overflow-x:clip}
+body{margin:0;font-family:"Open Sans","Open Sans Fallback",system-ui,sans-serif;color:var(--ink-2);background:var(--bg);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;height:auto;display:block}
+a{color:inherit;text-decoration:none}
+h1,h2,h3,h4{font-weight:800;line-height:1.02;letter-spacing:-.02em;margin:0;color:var(--ink)}
+.wrap{width:min(1200px,92vw);margin-inline:auto}
+.tag{display:inline-block;background:var(--red);color:#fff;font-size:.8rem;font-weight:700;padding:.35em .9em;border-radius:6px;letter-spacing:.02em;margin-bottom:1rem}
+.h2{font-size:clamp(2.4rem,6vw,4.6rem);text-transform:lowercase}
+.lead{font-size:1.1rem;color:var(--muted);max-width:60ch}
+section{position:relative}
+
+/* ---------- progress bar ---------- */
+.progress{position:fixed;inset:0 0 auto 0;height:3px;background:var(--red);transform-origin:0 50%;transform:scaleX(0);z-index:120}
+
+/* ---------- custom cursor ---------- */
+.cursor,.cursor-dot{position:fixed;top:0;left:0;pointer-events:none;z-index:200;border-radius:50%;opacity:0;transition:opacity .3s}
+.cursor{width:38px;height:38px;margin:-19px 0 0 -19px;border:1.5px solid var(--red);display:grid;place-items:center;
+  transition:width .35s var(--ease),height .35s var(--ease),margin .35s var(--ease),background .35s,border-color .35s,opacity .3s}
+.cursor span{font-size:.7rem;font-weight:700;color:#fff;opacity:0;transition:opacity .2s;text-transform:uppercase;letter-spacing:.08em}
+.cursor-dot{width:6px;height:6px;margin:-3px 0 0 -3px;background:var(--red)}
+body.has-cursor .cursor,body.has-cursor .cursor-dot{opacity:1}
+.cursor.is-link{width:64px;height:64px;margin:-32px 0 0 -32px;background:rgba(224,4,4,.12)}
+.cursor.is-view{width:90px;height:90px;margin:-45px 0 0 -45px;background:var(--red);border-color:var(--red)}
+.cursor.is-view span{opacity:1}
+@media (pointer:fine){body.has-cursor,body.has-cursor a,body.has-cursor button{cursor:none}}
+
+/* ---------- floating navbar ---------- */
+.nav{position:fixed;top:18px;left:50%;transform:translateX(-50%);z-index:100;width:min(1160px,94vw);
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:10px 10px 10px 22px;border-radius:999px;
+  background:rgba(18,18,18,.55);backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);
+  border:1px solid rgba(255,255,255,.12);box-shadow:0 10px 40px rgba(0,0,0,.25);color:#fff;
+  transition:transform .5s var(--ease),top .4s var(--ease),padding .4s var(--ease),background .4s,box-shadow .4s}
+.nav.scrolled{top:10px;background:rgba(18,18,18,.86);box-shadow:0 14px 50px rgba(0,0,0,.28)}
+.nav.hidden{transform:translate(-50%,-140%)}
+.nav__logo img{height:42px;width:auto;transition:height .4s var(--ease)}
+.nav.scrolled .nav__logo img{height:36px}
+.nav__links{position:relative;display:flex;gap:.25rem;list-style:none;margin:0;padding:0}
+.nav__links a{position:relative;z-index:1;display:block;padding:.6rem 1rem;font-weight:600;font-size:.95rem;border-radius:999px;color:rgba(255,255,255,.8);transition:color .3s}
+.nav__links a.active,.nav__links a:hover{color:#fff}
+.nav__pill{position:absolute;top:0;height:100%;border-radius:999px;background:var(--red);z-index:0;opacity:0;
+  transition:left .45s var(--ease),width .45s var(--ease),opacity .3s}
+.btn{--mx:0px;--my:0px;display:inline-flex;align-items:center;gap:.6rem;font-weight:700;border:0;font:inherit;font-weight:700;cursor:pointer;
+  padding:.9rem 1.5rem;border-radius:999px;transition:box-shadow .35s,background .3s,color .3s;position:relative;overflow:hidden;isolation:isolate}
+.btn--red{background:var(--red);color:#fff;box-shadow:0 8px 24px var(--red-glow)}
+.btn--red::before{content:"";position:absolute;inset:0;background:#fff;transform:translateY(101%);transition:transform .45s var(--ease);z-index:-1}
+.btn--red:hover::before{transform:none}
+.btn--red:hover{color:var(--red)}
+.btn--ghost{color:#fff;border:1.5px solid rgba(255,255,255,.5)}
+.btn--ghost:hover{background:#fff;color:var(--ink)}
+.btn svg{width:18px;height:18px;transition:transform .35s var(--ease)}
+.btn:hover svg{transform:translateX(4px)}
+.nav .btn{padding:.75rem 1.3rem;font-size:.92rem}
+.burger{display:none;width:46px;height:46px;border-radius:50%;border:0;background:var(--red);cursor:pointer;position:relative}
+.burger span{position:absolute;left:14px;right:14px;height:2px;background:#fff;transition:transform .35s var(--ease),top .35s var(--ease)}
+.burger span:nth-child(1){top:19px}.burger span:nth-child(2){top:26px}
+.nav.open .burger span:nth-child(1){top:22px;transform:rotate(45deg)}
+.nav.open .burger span:nth-child(2){top:22px;transform:rotate(-45deg)}
+.mmenu{position:fixed;inset:0;z-index:90;background:var(--ink);display:flex;flex-direction:column;justify-content:center;padding:0 8vw;
+  clip-path:circle(0 at calc(100% - 50px) 42px);transition:clip-path .7s var(--ease)}
+.mmenu.open{clip-path:circle(150% at calc(100% - 50px) 42px)}
+.mmenu a{color:#fff;font-size:clamp(2.2rem,10vw,3.4rem);font-weight:800;text-transform:lowercase;padding:.2rem 0;
+  opacity:0;transform:translateY(30px);transition:opacity .5s,transform .5s var(--ease),color .3s}
+.mmenu a:hover{color:var(--red)}
+.mmenu.open a{opacity:1;transform:none}
+.mmenu small{color:#888;margin-top:2rem}
+
+/* ---------- hero ---------- */
+.hero{position:relative;min-height:100svh;display:flex;align-items:flex-end;color:#fff;overflow:hidden;background:#000;padding-bottom:9rem}
+.hero__bg{position:absolute;top:-6%;left:-6%;width:112%;height:112%;max-width:none;object-fit:cover;
+  will-change:transform}
+.hero::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(0,0,0,.75) 0%,rgba(0,0,0,.35) 55%,rgba(0,0,0,.1) 100%),linear-gradient(0deg,rgba(0,0,0,.7),transparent 50%)}
+.hero__glow{position:absolute;inset:0;z-index:2;pointer-events:none;mix-blend-mode:screen;
+  background:radial-gradient(520px circle at var(--gx,70%) var(--gy,40%),rgba(224,4,4,.38),transparent 60%);transition:background .1s}
+.hero__lines{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:.5}
+.hero__lines i{position:absolute;height:2px;width:180px;background:linear-gradient(90deg,transparent,#fff);animation:speed 2.6s linear infinite;opacity:.0}
+@keyframes speed{0%{transform:translateX(-30vw);opacity:0}15%{opacity:.8}100%{transform:translateX(120vw);opacity:0}}
+.hero .wrap{position:relative;z-index:3}
+.hero h1{color:#fff;font-size:clamp(2.7rem,11vw,9.5rem);text-transform:lowercase;line-height:.92;letter-spacing:-.04em}
+.hero h1 .line{display:block;overflow:hidden;padding-bottom:.06em}
+.hero h1 .w{display:inline-block;white-space:nowrap}
+.hero h1 .ch{display:inline-block;animation:chUp .75s var(--ease) both}
+@keyframes chUp{from{transform:translateY(110%)}}
+.hero h1 .red{color:var(--red)}
+.hero__sub{max-width:520px;margin:1.6rem 0 2rem;font-size:1.05rem;font-weight:600;text-transform:uppercase;letter-spacing:.02em;animation:fadeUp .8s var(--ease) .35s both}
+@keyframes fadeUp{from{opacity:.15;transform:translateY(16px)}}
+.hero__cta{display:flex;gap:1rem;flex-wrap:wrap;animation:fadeUp .8s var(--ease) .5s both}
+.scroll-hint{position:absolute;right:4vw;bottom:9.5rem;z-index:3;display:flex;flex-direction:column;align-items:center;gap:.6rem;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;writing-mode:vertical-rl}
+.scroll-hint::after{content:"";width:1.5px;height:60px;background:linear-gradient(var(--red),transparent);animation:drip 1.8s ease-in-out infinite}
+@keyframes drip{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* ---------- stats ---------- */
+.stats{margin-top:-5.5rem;z-index:5}
+.stats__grid{display:grid;grid-template-columns:repeat(4,1fr);background:#fff;border-radius:var(--r);box-shadow:0 30px 80px rgba(0,0,0,.14);overflow:hidden}
+.stat{padding:2rem 1.6rem;border-right:1px solid var(--line);position:relative;transition:background .35s}
+.stat:last-child{border-right:0}
+.stat::after{content:"";position:absolute;left:0;bottom:0;height:3px;width:100%;background:var(--red);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease)}
+.stat:hover::after{transform:none}
+.stat b{display:block;white-space:nowrap;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;color:var(--ink);line-height:1}
+.stat b em{font-style:normal;color:var(--red)}
+.stat>span{font-size:.9rem;color:var(--muted)}
+.stat b span{font-size:inherit;color:inherit}
+
+/* ---------- marquee ---------- */
+.marquee{overflow:hidden;padding:1.6rem 0;display:grid;gap:1rem;border-block:1px solid var(--line);margin-top:5rem;background:var(--soft)}
+.marquee__track{display:flex;gap:3rem;padding-right:3rem;width:max-content;animation:marquee 32s linear infinite;will-change:transform}
+.marquee__track--alt{animation-direction:reverse}
+.marquee .marquee__track--alt span{color:#bdbdbd}
+.marquee:hover .marquee__track{animation-play-state:paused}
+.marquee__track span{font-size:clamp(1.4rem,3vw,2.2rem);font-weight:800;text-transform:lowercase;white-space:nowrap;display:flex;align-items:center;gap:3rem;color:var(--ink)}
+.marquee__track span::after{content:"";width:12px;height:12px;background:var(--red);transform:rotate(45deg)}
+@keyframes marquee{to{transform:translateX(-50%)}}
+
+/* ---------- about ---------- */
+.about{padding:8rem 0}
+.about__grid{display:grid;grid-template-columns:1fr 1.05fr;gap:4rem;align-items:center}
+.about p{color:var(--muted)}
+.about .intro{font-size:1.15rem;color:var(--ink-2);font-weight:600}
+.partners{margin-top:2.2rem;max-width:300px;filter:grayscale(1);opacity:.75;transition:filter .4s,opacity .4s}
+.partners:hover{filter:none;opacity:1}
+.tilt{--x:50%;--y:50%;transform-style:preserve-3d;will-change:transform}
+.map-wrap,.food__cards{perspective:1000px}
+.map-card{position:relative;border-radius:var(--r);background:#fff;box-shadow:0 30px 80px rgba(0,0,0,.12)}
+.map-card img{width:100%;border-radius:var(--r);min-height:320px;object-fit:cover;background:var(--soft)}
+.map-card::after{content:"";position:absolute;inset:0;background:radial-gradient(400px circle at var(--x) var(--y),rgba(255,255,255,.35),transparent 50%);pointer-events:none;border-radius:inherit}
+.sede{position:absolute;left:-2.5rem;bottom:-2.5rem;width:min(340px,80%);background:var(--ink);color:#fff;padding:1.6rem;border-radius:18px;
+  transform:translateZ(60px);box-shadow:0 20px 50px rgba(0,0,0,.3)}
+.sede h3{color:#fff;font-size:1.1rem;margin-bottom:.6rem;display:flex;align-items:center;gap:.6rem}
+.sede h3::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--red);box-shadow:0 0 0 0 var(--red-glow);animation:pulse 2s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 14px rgba(224,4,4,0)}100%{box-shadow:0 0 0 0 rgba(224,4,4,0)}}
+.sede p{color:#bbb;font-size:.9rem;margin:0}
+
+/* ---------- fleet ---------- */
+.fleet{padding:2rem 0 8rem}
+.fleet__img{position:relative;border-radius:var(--r);overflow:hidden;height:min(70vh,640px)}
+.js .fleet__img{clip-path:inset(14% 10% 14% 10% round 22px)}
+.fleet__img img{position:absolute;left:0;top:-10%;width:100%;height:120%;object-fit:cover;will-change:transform}
+.fleet__head{display:flex;justify-content:space-between;align-items:end;gap:2rem;margin-bottom:2.5rem;flex-wrap:wrap}
+.fleet__cols{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:3rem}
+.feat{border-top:2px solid var(--ink);padding-top:1.2rem}
+.feat h4{font-size:1.15rem;margin-bottom:.4rem;text-transform:lowercase}
+.feat p{color:var(--muted);margin:0;font-size:.95rem}
+
+/* ---------- services ---------- */
+.band{height:60vh;min-height:380px;overflow:hidden;display:grid;place-items:center;color:#fff;text-align:center}
+.band__bg{position:absolute;inset:-15% 0;background:#2a2a2a center/cover;will-change:transform}
+.band::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.45)}
+.band .wrap{position:relative;z-index:2}
+.band h2{color:#fff;font-size:clamp(3rem,10vw,8rem);text-transform:lowercase}
+.band p{max-width:640px;margin:1rem auto 0;font-size:1.05rem}
+.services{padding:7rem 0;background:var(--soft)}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem}
+.card{position:relative;background:#fff;border-radius:var(--r);padding:2.2rem;overflow:hidden;border:1px solid var(--line);isolation:isolate}
+.card::before{content:"";position:absolute;inset:0;z-index:-1;opacity:0;transition:opacity .4s;
+  background:radial-gradient(380px circle at var(--x) var(--y),rgba(224,4,4,.12),transparent 55%)}
+.card::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.5px;opacity:0;transition:opacity .4s;pointer-events:none;
+  background:radial-gradient(260px circle at var(--x) var(--y),var(--red),transparent 60%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+.card:hover::before,.card:hover::after{opacity:1}
+.card__n{position:absolute;top:1.6rem;right:1.8rem;font-size:.85rem;font-weight:800;color:#c9c9c9}
+.card__ico{width:56px;height:56px;border-radius:16px;background:var(--ink);display:grid;place-items:center;margin-bottom:1.6rem;transition:background .4s,transform .5s var(--ease)}
+.card:hover .card__ico{background:var(--red);transform:rotate(-8deg) scale(1.08)}
+.card__ico svg{width:28px;height:28px;stroke:#fff;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.card h3{font-size:1.25rem;text-transform:lowercase;margin-bottom:.8rem}
+.card p,.card li{color:var(--muted);font-size:.95rem}
+.card ul{padding-left:1.1rem;margin:.5rem 0 0}
+.card li::marker{color:var(--red)}
+.card--feature{grid-column:span 1;background:var(--ink);color:#ddd;border-color:var(--ink)}
+.card--feature h3{color:#fff;font-size:1.8rem}
+.card--feature p{color:#aaa}
+.chips{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.chip{font-size:.8rem;font-weight:700;padding:.35rem .8rem;border-radius:999px;background:var(--soft);color:var(--ink)}
+.card--feature .chip{background:rgba(255,255,255,.1);color:#fff}
+
+/* ---------- food ---------- */
+.food{background:#0d0d0d;color:#ddd;padding:8rem 0;overflow:hidden}
+.food__bg{position:absolute;inset:0;background:#1a1a1a center/cover;opacity:.22;
+  transform:scale(1.1);will-change:transform}
+.food::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#0d0d0d 0%,rgba(13,13,13,.6) 40%,#0d0d0d 100%);z-index:1}
+.food .wrap{position:relative;z-index:2}
+.food h2{color:#fff}
+.food__top{display:grid;grid-template-columns:1.2fr 1fr;gap:4rem;align-items:start;margin-bottom:4rem}
+.food__top .cold{height:64px;width:auto;margin-bottom:1.5rem}
+.food .lead{color:#aaa}
+.facts{display:grid;gap:.8rem;margin:0;padding:0;list-style:none}
+.facts li{display:flex;gap:1rem;align-items:center;padding:1rem 1.2rem;border:1px solid rgba(255,255,255,.1);border-radius:14px;background:rgba(255,255,255,.03);transition:border-color .3s,transform .4s var(--ease)}
+.facts li:hover{border-color:var(--red);transform:translateX(6px)}
+.facts b{color:#fff;font-size:1.4rem;min-width:110px}
+.areas{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1.5rem}
+.areas span{padding:.5rem 1rem;border-radius:999px;border:1px solid rgba(255,255,255,.2);font-weight:700;font-size:.82rem;color:#fff;transition:background .3s,border-color .3s}
+.areas span:hover{background:var(--red);border-color:var(--red)}
+.food__cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem}
+.fcard{position:relative;border-radius:var(--r);overflow:hidden;min-height:440px;display:flex;align-items:flex-end;color:#fff}
+.fcard img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1s var(--ease)}
+.fcard:hover img{transform:scale(1.08)}
+.fcard::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.9) 10%,rgba(0,0,0,.1) 70%)}
+.fcard__body{position:relative;z-index:2;padding:1.8rem}
+.fcard h4{color:#fff;font-size:1.6rem;text-transform:lowercase;margin-bottom:.6rem}
+.fcard p{margin:0;font-size:.92rem;color:#ccc;max-height:0;opacity:0;overflow:hidden;transition:max-height .6s var(--ease),opacity .5s}
+.fcard:hover p,.fcard:focus-within p{max-height:200px;opacity:1}
+.fcard__bar{width:40px;height:3px;background:var(--red);margin-bottom:1rem;transition:width .5s var(--ease)}
+.fcard:hover .fcard__bar{width:90px}
+
+/* ---------- contact ---------- */
+.contact{padding:8rem 0;color:#fff;overflow:hidden}
+.contact__bg{position:absolute;inset:-10% 0;background:#111 center/cover;will-change:transform}
+.contact::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.85),rgba(0,0,0,.55))}
+.contact .wrap{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.contact h2{color:#fff}
+.contact .lead{color:#ccc}
+.form{background:rgba(255,255,255,.08);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);padding:2.2rem}
+.field{position:relative;margin-bottom:1.3rem}
+.field input,.field textarea{width:100%;background:transparent;border:0;border-bottom:1.5px solid rgba(255,255,255,.3);color:#fff;font:inherit;padding:1.4rem 0 .6rem;outline:none;resize:vertical;transition:border-color .3s}
+.field label{position:absolute;left:0;top:1.3rem;color:#aaa;pointer-events:none;transition:.3s var(--ease)}
+.field input:focus,.field textarea:focus{border-color:var(--red)}
+.field input:focus+label,.field input:not(:placeholder-shown)+label,.field textarea:focus+label,.field textarea:not(:placeholder-shown)+label{top:0;font-size:.75rem;color:var(--red);font-weight:700}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.form button[disabled]{opacity:.6;pointer-events:none}
+.form__msg{margin:1rem 0 0;font-size:.9rem;color:#9fe09f;min-height:1.4em}
+
+/* ---------- footer ---------- */
+footer{background:#000;color:#999;padding:4rem 0 2rem;font-size:.9rem}
+.foot{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:3rem;align-items:start}
+footer h4{color:#fff;font-size:.95rem;margin-bottom:.8rem;text-transform:uppercase;letter-spacing:.06em}
+footer p{margin:.2rem 0}
+footer a:hover{color:var(--red)}
+.foot__logos{max-width:320px}
+.foot__bottom{margin-top:3rem;padding-top:1.5rem;border-top:1px solid #222;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.totop{width:46px;height:46px;border-radius:50%;border:1px solid #333;display:grid;place-items:center;color:#fff;transition:background .3s,border-color .3s}
+.totop:hover{background:var(--red);border-color:var(--red);color:#fff}
+
+/* ---------- lazy backgrounds ---------- */
+.band__bg.in{background-image:url(img/servizi-800.webp);background-image:image-set(url(img/servizi-800.avif) type("image/avif"),url(img/servizi-800.webp) type("image/webp"))}
+.food__bg.in{background-image:url(img/food-800.webp);background-image:image-set(url(img/food-800.avif) type("image/avif"),url(img/food-800.webp) type("image/webp"))}
+.contact__bg.in{background-image:url(img/contatti-800.webp);background-image:image-set(url(img/contatti-800.avif) type("image/avif"),url(img/contatti-800.webp) type("image/webp"))}
+@media (min-width:901px){
+  .band__bg.in{background-image:url(img/servizi-1600.webp);background-image:image-set(url(img/servizi-1600.avif) type("image/avif"),url(img/servizi-1600.webp) type("image/webp"))}
+  .food__bg.in{background-image:url(img/food-1600.webp);background-image:image-set(url(img/food-1600.avif) type("image/avif"),url(img/food-1600.webp) type("image/webp"))}
+  .contact__bg.in{background-image:url(img/contatti-1600.webp);background-image:image-set(url(img/contatti-1600.avif) type("image/avif"),url(img/contatti-1600.webp) type("image/webp"))}
+}
+
+/* ---------- reveal ---------- */
+.js .rv:not(.is-in),.js [data-split]{visibility:hidden}
+.js .rv:not(.done){transition:none!important}
+[data-split="float"]{overflow:hidden;padding-bottom:.12em;margin-bottom:-.12em}
+.sc{will-change:transform}
+
+/* ---------- responsive ---------- */
+@media (max-width:960px){
+  .nav__links,.nav .btn{display:none}
+  .burger{display:block}
+  .nav{padding:8px 8px 8px 18px}
+  .about__grid,.food__top,.contact .wrap{grid-template-columns:1fr;gap:3rem}
+  .cards,.food__cards,.fleet__cols{grid-template-columns:1fr 1fr}
+  .stats__grid{grid-template-columns:1fr 1fr}
+  .stat{padding:1.5rem 1.1rem}
+  .stat:nth-child(2){border-right:0}.stat:nth-child(-n+2){border-bottom:1px solid var(--line)}
+  .foot{grid-template-columns:1fr}
+  .sede{left:1rem;bottom:-2rem}
+  .fcard p{max-height:200px;opacity:1}
+  .scroll-hint{display:none}
+}
+@media (max-width:600px){
+  .cards,.food__cards,.fleet__cols{grid-template-columns:1fr}
+  .about,.services,.food,.contact{padding:5rem 0}
+  .nav__logo img{height:34px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .js .rv,.js [data-split]{visibility:visible!important}
+  .js .fleet__img{clip-path:none}
+}
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+<div class="cursor" id="cursor"><span>scopri</span></div>
+<div class="cursor-dot" id="cursorDot"></div>
+
+<!-- ============ FLOATING NAVBAR ============ -->
+<nav class="nav" id="nav" aria-label="Navigazione principale">
+  <a href="#top" class="nav__logo" aria-label="Novara Trasporti Express - home">
+    <img src="img/logo.webp" alt="Novara Trasporti Express" width="328" height="77">
+  </a>
+  <ul class="nav__links" id="navLinks">
+    <span class="nav__pill" id="navPill"></span>
+    <li><a href="#chi-siamo">chi siamo</a></li>
+    <li><a href="#flotta">flotta</a></li>
+    <li><a href="#servizi">servizi</a></li>
+    <li><a href="#food">food</a></li>
+    <li><a href="#contatti">contatti</a></li>
+  </ul>
+  <a href="#contatti" class="btn btn--red" data-magnetic>Richiedi preventivo
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+  <button class="burger" id="burger" aria-label="Apri menu" aria-expanded="false"><span></span><span></span></button>
+</nav>
+
+<div class="mmenu" id="mmenu" aria-hidden="true">
+  <a href="#chi-siamo">chi siamo</a>
+  <a href="#flotta">flotta</a>
+  <a href="#servizi">servizi</a>
+  <a href="#food">food</a>
+  <a href="#contatti">contatti</a>
+  <small>Via Verdi 14 · 28060 San Pietro Mosezzo (NO)</small>
+</div>
+
+<!-- ============ HERO ============ -->
+<header class="hero" id="top">
+  <picture>
+    <source type="image/avif" srcset="img/hero-640.avif 640w, img/hero-1024.avif 1024w, img/hero-1600.avif 1600w, img/hero-2048.avif 2048w" sizes="(orientation:portrait) 100vh, 100vw">
+    <source type="image/webp" srcset="img/hero-640.webp 640w, img/hero-1024.webp 1024w, img/hero-1600.webp 1600w, img/hero-2048.webp 2048w" sizes="(orientation:portrait) 100vh, 100vw">
+    <img class="hero__bg" id="heroBg" src="img/hero-1024.webp" alt="" width="2048" height="1364" fetchpriority="high">
+  </picture>
+  <div class="hero__glow" id="heroGlow"></div>
+  <div class="hero__lines" id="heroLines"></div>
+  <div class="wrap">
+    <h1 aria-label="muoviamo il tuo business">
+      <span class="line" data-hero-split>muoviamo</span>
+      <span class="line" data-hero-split>il tuo <span class="red">business</span></span>
+    </h1>
+    <p class="hero__sub">Da più di 10 anni Novara Trasporti muove le tue merci di destinazione in destinazione con la massima rapidità e puntualità.</p>
+    <div class="hero__cta">
+      <a href="#contatti" class="btn btn--red" data-magnetic>Richiedi un preventivo
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a href="#servizi" class="btn btn--ghost" data-magnetic>Scopri i servizi</a>
+    </div>
+  </div>
+  <div class="scroll-hint">scroll</div>
+</header>
+
+<!-- ============ STATS ============ -->
+<section class="stats">
+  <div class="wrap">
+    <div class="stats__grid rv">
+      <div class="stat"><b><span data-count="10">0</span><em>+</em></b><span>anni di esperienza nell'ultimo miglio</span></div>
+      <div class="stat"><b><span data-count="2500" data-sep>0</span><em> m²</em></b><span>magazzino coperto a Novara</span></div>
+      <div class="stat"><b><span data-count="24">0</span><em>/7</em></b><span>videosorveglianza interna ed esterna</span></div>
+      <div class="stat"><b><span data-count="200">0</span><em> m²</em></b><span>celle frigorifere 0° / +10°</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track">
+    <span>consegne in ztl</span><span>milano · genova · savona</span><span>euro vi</span><span>sponda idraulica</span><span>supply chain</span><span>atp frcx</span><span>haccp</span><span>b2b express</span>
+    <span>consegne in ztl</span><span>milano · genova · savona</span><span>euro vi</span><span>sponda idraulica</span><span>supply chain</span><span>atp frcx</span><span>haccp</span><span>b2b express</span>
+  </div>
+  <div class="marquee__track marquee__track--alt">
+    <span>novara</span><span>verbano cusio ossola</span><span>biella</span><span>vercelli</span><span>2.500 m² di magazzino</span><span>celle 0° / +10°</span>
+    <span>novara</span><span>verbano cusio ossola</span><span>biella</span><span>vercelli</span><span>2.500 m² di magazzino</span><span>celle 0° / +10°</span>
+  </div>
+</div>
+
+<!-- ============ CHI SIAMO ============ -->
+<section class="about" id="chi-siamo">
+  <div class="wrap about__grid">
+    <div>
+      <span class="tag rv">chi siamo</span>
+      <h2 class="h2" data-split="float">hub e partner</h2>
+      <p class="intro" data-split="reveal">Novara Trasporti è un servizio di logistica e distribuzione espressa dedicato alle aziende B2B che necessitano di consegne puntuali, rispetto degli orari e continuità operativa.</p>
+      <p class="rv">Da oltre 10 anni supportiamo e-commerce, aziende industriali e realtà retail nella gestione dell'ultimo miglio, garantendo ritiro e consegna rapidi, con un'organizzazione costruita per ridurre ritardi, imprevisti e disservizi.</p>
+      <p class="rv">Professionalità, efficienza e rapidità sono la base del nostro servizio: grazie all'esperienza del personale operativo e viaggiante esaudiamo qualunque esigenza in sicurezza e tempestività. NTE opera in diverse zone del Nord e del Centro Italia.</p>
+      <img class="partners rv" src="img/partner.webp" alt="Novara Trasporti - muoviamo il tuo business" width="600" height="182" loading="lazy" decoding="async">
+    </div>
+    <div class="rv map-wrap">
+      <div class="map-card tilt" data-tilt="8" data-view>
+        <picture><source type="image/avif" srcset="img/mappa-600.avif 600w, img/mappa-1100.avif 1100w" sizes="(max-width:960px) 92vw, 570px"><source type="image/webp" srcset="img/mappa-600.webp 600w, img/mappa-1100.webp 1100w" sizes="(max-width:960px) 92vw, 570px"><img src="img/mappa-1100.webp" alt="Mappa delle zone servite da Novara Trasporti nel Nord e Centro Italia" width="1100" height="946" loading="lazy" decoding="async"></picture>
+        <div class="sede">
+          <h3>sede di novara</h3>
+          <p>Magazzino coperto di 2.500 m² per lo stoccaggio, sorvegliato da telecamere interne ed esterne 24h/24. Ampio piazzale per le manovre dei mezzi.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FLOTTA ============ -->
+<section class="fleet" id="flotta">
+  <div class="wrap">
+    <div class="fleet__head">
+      <div>
+        <span class="tag rv">mezzi</span>
+        <h2 class="h2" data-split="float">la flotta</h2>
+      </div>
+      <p class="lead rv">Parco mezzi di ultima generazione, aggiornato e selezionato con cura: far viaggiare in sicurezza personale e merci e rispettare l'ambiente riducendo i consumi.</p>
+    </div>
+    <div class="fleet__img" id="fleetImg" data-view>
+      <picture><source type="image/avif" srcset="img/flotta-800.avif 800w, img/flotta-1400.avif 1400w" sizes="(max-width:1200px) 92vw, 1200px"><source type="image/webp" srcset="img/flotta-800.webp 800w, img/flotta-1400.webp 1400w" sizes="(max-width:1200px) 92vw, 1200px"><img src="img/flotta-1400.webp" alt="La flotta di Novara Trasporti Express" width="1400" height="933" loading="lazy" decoding="async"></picture>
+    </div>
+    <div class="fleet__cols">
+      <div class="feat rv"><h4>motorizzazioni euro vi</h4><p>Mezzi moderni e costantemente aggiornati, per ridurre consumi ed emissioni.</p></div>
+      <div class="feat rv"><h4>sponda idraulica su tutti i mezzi</h4><p>Facilita il lavoro dei magazzinieri e aumenta la sicurezza in carico e scarico.</p></div>
+      <div class="feat rv"><h4>accesso a ztl e centri città</h4><p>Gli autocarri operano in contesti urbani complessi per consegne e ritiri.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SERVIZI ============ -->
+<section class="band" id="servizi">
+  <div class="band__bg" data-lazybg></div>
+  <div class="wrap">
+    <span class="tag rv">servizi</span>
+    <h2 data-split="float">smart supplier</h2>
+    <p class="rv">Servizi per muovere merci con efficacia e per esigenze di deposito di breve o lunga durata, anche di prodotti alimentari freschi. Un'offerta a 360°, rara nel settore.</p>
+  </div>
+</section>
+
+<section class="services">
+  <div class="wrap cards">
+    <article class="card card--feature rv" data-spot>
+      <span class="card__n">00</span>
+      <div class="card__ico"><svg viewBox="0 0 24 24"><path d="M12 2l3 6 6 .9-4.5 4.3 1 6.3L12 16.6 6.5 19.5l1-6.3L3 8.9 9 8z"/></svg></div>
+      <h3>un'offerta a 360°</h3>
+      <p>Trasporto, deposito e gestione della merce con un unico interlocutore, per e-commerce, industria e retail.</p>
+      <div class="chips"><span class="chip">B2B</span><span class="chip">Ultimo miglio</span><span class="chip">GDO</span></div>
+    </article>
+    <article class="card rv" data-spot>
+      <span class="card__n">01</span>
+      <div class="card__ico"><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11a7 7 0 1114 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></div>
+      <h3>ritiri e consegne in ztl</h3>
+      <p>Mezzi abilitati all'accesso alle ZTL. Ideale per consegne a punto vendita e contesti urbani vincolati.</p>
+      <div class="chips"><span class="chip">Milano</span><span class="chip">Genova</span><span class="chip">Savona</span></div>
+    </article>
+    <article class="card rv" data-spot>
+      <span class="card__n">02</span>
+      <div class="card__ico"><svg viewBox="0 0 24 24"><path d="M2 7h12v9H2zM14 10h4l3 3v3h-7z"/><circle cx="6" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg></div>
+      <h3>sponda idraulica e copri/scopri</h3>
+      <p>Mezzi pesanti con sponda idraulica e cassoni con telo apribile sui lati e sul cielo, per operare in sicurezza in qualunque condizione.</p>
+    </article>
+    <article class="card rv" data-spot>
+      <span class="card__n">03</span>
+      <div class="card__ico"><svg viewBox="0 0 24 24"><path d="M3 21V9l9-6 9 6v12"/><path d="M7 21v-8h10v8M7 17h10"/></svg></div>
+      <h3>deposito a breve e lunga durata</h3>
+      <p>Magazzini con spazi sopraelevabili, allarme collegato alle forze dell'ordine e telecamere 24h/24. Durata dello stoccaggio concordata sulle reali esigenze del cliente.</p>
+    </article>
+    <article class="card rv" data-spot>
+      <span class="card__n">04</span>
+      <div class="card__ico"><svg viewBox="0 0 24 24"><path d="M4 4h16v4H4zM4 10h16v4H4zM4 16h16v4H4z"/><path d="M8 6h.01M8 12h.01M8 18h.01"/></svg></div>
+      <h3>supply chain management</h3>
+      <ul>
+        <li>controllo qualità e quantità in entrata/uscita</li>
+        <li>picking in base agli ordini</li>
+        <li>preparazione per spedizione o deposito</li>
+        <li>gestione delle pratiche operative</li>
+      </ul>
+    </article>
+    <article class="card rv" data-spot>
+      <span class="card__n">05</span>
+      <div class="card__ico"><svg viewBox="0 0 24 24"><path d="M20 12l-8 8-9-9V3h8z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg></div>
+      <h3>tariffe personalizzate</h3>
+      <p>Le tariffe vengono definite in funzione di:</p>
+      <ul><li>esigenze operative</li><li>volumi</li><li>tipologia di merce</li></ul>
+    </article>
+  </div>
+</section>
+
+<!-- ============ FOOD ============ -->
+<section class="food" id="food">
+  <div class="food__bg" id="foodBg" data-lazybg></div>
+  <div class="wrap">
+    <div class="food__top">
+      <div>
+        <img class="cold rv" src="img/cold.webp" alt="Novara Trasporti Cold" width="560" height="113" loading="lazy" decoding="async">
+        <span class="tag rv">settore food</span>
+        <h2 class="h2" data-split="float">alimenti freschi</h2>
+        <p class="lead rv">Dal 2022 Novara Trasporti ha ampliato i propri servizi con la logistica del freddo: trasporto, consegna e stoccaggio a temperatura controllata di freschi e surgelati.</p>
+        <div class="areas rv"><span>Novara</span><span>Verbano Cusio Ossola</span><span>Biella</span><span>Vercelli</span></div>
+      </div>
+      <ul class="facts">
+        <li class="rv"><b>200 m²</b><span>celle frigorifere 0° / +10°, igienizzate regolarmente</span></li>
+        <li class="rv"><b>35 q</b><span>mezzi certificati ATP FRCX</span></li>
+        <li class="rv"><b>ogni giorno</b><span>distribuzione con frequenza giornaliera</span></li>
+      </ul>
+    </div>
+    <div class="food__cards">
+      <article class="fcard rv tilt" data-tilt="6" tabindex="0">
+        <picture><source type="image/avif" srcset="img/mezzi-480.avif 480w, img/mezzi-800.avif 800w" sizes="(max-width:600px) 92vw, (max-width:960px) 46vw, 390px"><source type="image/webp" srcset="img/mezzi-480.webp 480w, img/mezzi-800.webp 800w" sizes="(max-width:600px) 92vw, (max-width:960px) 46vw, 390px"><img src="img/mezzi-800.webp" alt="Mezzo refrigerato" width="800" height="533" loading="lazy" decoding="async"></picture>
+        <div class="fcard__body"><div class="fcard__bar"></div><h4>i mezzi</h4>
+          <p>Controllo della temperatura delle celle a norma ATP. Spazi igienizzati abitualmente e supervisionati dall'autista. Mezzi da 35 q attestati ATP FRCX, con distribuzione giornaliera.</p></div>
+      </article>
+      <article class="fcard rv tilt" data-tilt="6" tabindex="0">
+        <picture><source type="image/avif" srcset="img/celle-480.avif 480w, img/celle-800.avif 800w" sizes="(max-width:600px) 92vw, (max-width:960px) 46vw, 390px"><source type="image/webp" srcset="img/celle-480.webp 480w, img/celle-800.webp 800w" sizes="(max-width:600px) 92vw, (max-width:960px) 46vw, 390px"><img src="img/celle-800.webp" alt="Celle frigorifere" width="800" height="534" loading="lazy" decoding="async"></picture>
+        <div class="fcard__body"><div class="fcard__bar"></div><h4>le celle</h4>
+          <p>Nuove celle frigorifere da 200 m², da 0° a +10°, per lo stoccaggio degli alimenti. Igienizzate regolarmente.</p></div>
+      </article>
+      <article class="fcard rv tilt" data-tilt="6" tabindex="0">
+        <picture><source type="image/avif" srcset="img/haccp-480.avif 480w, img/haccp-800.avif 800w" sizes="(max-width:600px) 92vw, (max-width:960px) 46vw, 390px"><source type="image/webp" srcset="img/haccp-480.webp 480w, img/haccp-800.webp 800w" sizes="(max-width:600px) 92vw, (max-width:960px) 46vw, 390px"><img src="img/haccp-800.webp" alt="Personale formato HACCP" width="800" height="534" loading="lazy" decoding="async"></picture>
+        <div class="fcard__body"><div class="fcard__bar"></div><h4>formazione haccp</h4>
+          <p>Tutto il personale è formato in materia di sicurezza con attestati HACCP, fondamentali per la manipolazione del cibo.</p></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTATTI ============ -->
+<section class="contact" id="contatti">
+  <div class="contact__bg" data-lazybg></div>
+  <div class="wrap">
+    <div>
+      <span class="tag rv">contatti</span>
+      <h2 class="h2" data-split="float">parliamo del tuo trasporto</h2>
+      <p class="lead rv">Raccontaci volumi, tipologia di merce e destinazioni: ti proponiamo una soluzione e una tariffa su misura.</p>
+      <p class="rv"><b>Novara Trasporti</b><br>Via Verdi 14<br>28060 San Pietro Mosezzo, NO</p>
+    </div>
+    <form class="form rv" id="form" action="https://api.web3forms.com/submit" method="POST" novalidate>
+      <!-- Web3Forms: la access key si ottiene gratis su https://web3forms.com inserendo l'email che deve ricevere le richieste.
+           È pubblica per design (identifica solo il destinatario). -->
+      <input type="hidden" name="access_key" value="INSERISCI-ACCESS-KEY-WEB3FORMS">
+      <input type="hidden" name="subject" value="Nuova richiesta dal sito Novara Trasporti">
+      <input type="hidden" name="from_name" value="Sito Novara Trasporti">
+      <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <div class="field"><input id="f-name" name="name" autocomplete="name" placeholder=" " required><label for="f-name">Nome e Cognome</label></div>
+      <div class="field"><input id="f-mail" name="email" type="email" autocomplete="email" placeholder=" " required><label for="f-mail">Email</label></div>
+      <div class="field"><textarea id="f-msg" name="message" rows="4" placeholder=" " required></textarea><label for="f-msg">Descrivi la tua necessità</label></div>
+      <button class="btn btn--red" type="submit" data-magnetic>invia
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      <p class="form__msg" id="formMsg" role="status"></p>
+    </form>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div><img class="foot__logos" src="img/partner-w.webp" alt="Novara Trasporti Express" width="640" height="194" loading="lazy" decoding="async"></div>
+      <div><h4>Sede</h4><p>Novara Trasporti</p><p>Via Verdi 14</p><p>28060 San Pietro Mosezzo, NO</p></div>
+      <div><h4>Dati aziendali</h4><p>P.IVA 02260800038</p><p>N. Albo Autotrasportatori NO 653653V</p></div>
+    </div>
+    <div class="foot__bottom">
+      <span>© <span id="year"></span> Novara Trasporti Express</span>
+      <a href="#top" class="totop" aria-label="Torna su" data-magnetic>↑</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* split del titolo hero in lettere: inline per animare subito, senza aspettare le librerie */
+(() => {
+  document.getElementById('year').textContent = new Date().getFullYear();
+  let i = 0;
+  document.querySelectorAll('[data-hero-split]').forEach(line => {
+    const walk = node => [...node.childNodes].forEach(n => {
+      if (n.nodeType === 3) {
+        const frag = document.createDocumentFragment();
+        n.textContent.split(/(\s+)/).forEach(part => {
+          if (!part) return;
+          if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(' ')); return; }
+          const w = document.createElement('span');   // parola intera: non va a capo a metà
+          w.className = 'w';
+          [...part].forEach(c => {
+            const s = document.createElement('span');
+            s.className = 'ch'; s.textContent = c;
+            s.style.animationDelay = (i++ * 0.025) + 's';
+            w.appendChild(s);
+          });
+          frag.appendChild(w);
+        });
+        n.replaceWith(frag);
+      } else walk(n);
+    });
+    walk(line);
+  });
+  const lines = document.getElementById('heroLines');
+  for (let k = 0; k < 9; k++) {
+    const l = document.createElement('i');
+    l.style.cssText = `top:${15 + Math.random() * 75}%;width:${80 + Math.random() * 220}px;animation-delay:${Math.random() * 3}s;animation-duration:${1.6 + Math.random() * 2}s`;
+    lines.appendChild(l);
+  }
+})();
+</script>
+<script src="js/lenis.min.js?v=20261111" defer></script>
+<script src="js/gsap.min.js?v=20261111" defer></script>
+<script src="js/ScrollTrigger.min.js?v=20261111" defer></script>
+<script src="js/SplitText.min.js?v=20261111" defer></script>
+<script src="js/app.js?v=20261111" defer></script>
+</body>
+</html>
